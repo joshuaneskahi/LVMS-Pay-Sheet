@@ -118,24 +118,28 @@
                 let event = document.getElementById('event').value;
                 let date = document.getElementById('date').value;
 
-                let data = '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">';
-                data += '<tr><th>Last Name</th><th>First Name</th><th>Time-In</th><th>Time-Out</th><th>Total Hours</th><th>Radio #</th><th>Notes</th></tr>';
+                let data = 'Event Security Pay Sheet:\n\n';
+                data += 'Event: ' + event + '\n';
+                data += 'Date: ' + date + '\n\n';
+                data += 'Last Name, First Name, Time-In, Time-Out, Total Hours, Radio #, Notes\n';
                 
                 for (let i = 1; i <= 10; i++) {
-                    data += '<tr>';
-                    data += `<td>${document.getElementById('lastname' + i).value}</td>`;
-                    data += `<td>${document.getElementById('firstname' + i).value}</td>`;
-                    data += `<td>${document.getElementById('timein' + i).value}</td>`;
-                    data += `<td>${document.getElementById('timeout' + i).value}</td>`;
-                    data += `<td>${document.getElementById('totalhours' + i).value}</td>`;
-                    data += `<td>${document.getElementById('radio' + i).value}</td>`;
-                    data += `<td>${document.getElementById('notes' + i).value}</td>`;
-                    data += '</tr>';
+                    data += document.getElementById('lastname' + i).value + ', ';
+                    data += document.getElementById('firstname' + i).value + ', ';
+                    data += document.getElementById('timein' + i).value + ', ';
+                    data += document.getElementById('timeout' + i).value + ', ';
+                    data += document.getElementById('totalhours' + i).value + ', ';
+                    data += document.getElementById('radio' + i).value + ', ';
+                    data += document.getElementById('notes' + i).value + '\n';
                 }
-                data += '</table>';
 
                 let subject = encodeURIComponent('Event Security Pay Sheet - ' + event + ' - ' + date);
-                window.location.href = 'mailto:joshua.neskahi@outlook.com?subject=' + subject + '&body=' + encodeURIComponent(data);
+                let body = encodeURIComponent(data);
+
+                // Use setTimeout to delay the mailto action and avoid browser blocking issues
+                setTimeout(function() {
+                    window.location.href = 'mailto:joshua.neskahi@outlook.com?subject=' + subject + '&body=' + body;
+                }, 100);  // Delay of 100ms to trigger mailto properly after confirmation
             }
         }
 
