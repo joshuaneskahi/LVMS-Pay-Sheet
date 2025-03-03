@@ -114,9 +114,12 @@
         }
 
         function submitForm() {
+            let event = document.getElementById('event').value;
+            let date = document.getElementById('date').value;
+
             let data = 'EVENT SECURITY PAY SHEET\n\n';
-            data += 'Event: ' + document.getElementById('event').value + '\n';
-            data += 'Date: ' + document.getElementById('date').value + '\n\n';
+            data += 'Event: ' + event + '\n';
+            data += 'Date: ' + date + '\n\n';
             data += 'Last Name, First Name, Time-In, Time-Out, Total Hours, Radio #, Notes\n';
             
             for (let i = 1; i <= 10; i++) {
@@ -129,7 +132,11 @@
                 data += document.getElementById('notes' + i).value + '\n';
             }
 
-            window.location.href = 'mailto:hlee@lvms.com?subject=Event Security Pay Sheet&body=' + encodeURIComponent(data);
+            // Set the subject line to include event and date
+            let subject = encodeURIComponent('Event Security Pay Sheet - ' + event + ' - ' + date);
+
+            // Use mailto with the event and date in the subject line
+            window.location.href = 'mailto:joshua.neskahi@outlook.com?subject=' + subject + '&body=' + encodeURIComponent(data);
         }
     </script>
 </head>
