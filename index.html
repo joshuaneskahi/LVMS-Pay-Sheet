@@ -70,7 +70,7 @@
                 data += `Date: ${date}\n\n`;
 
                 // Format the header for alignment
-                let header = `Last Name        First Name       Time-In    Time-Out   Total Hours  Radio #   Notes\n`;
+                let header = `Last Name       First Name     Time-In   Time-Out   Total Hours  Radio #   Notes\n`;
                 data += header;
 
                 // Define fixed widths for each column for alignment
@@ -83,6 +83,9 @@
                     radio: 10,
                     notes: 10
                 };
+
+                // Add a divider line after the header for better readability
+                data += `-------------------------------------------------------------------------------\n`;
 
                 // Adding each row with consistent spacing
                 for (let i = 1; i <= 30; i++) {
