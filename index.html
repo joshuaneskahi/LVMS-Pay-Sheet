@@ -123,7 +123,7 @@
 
         function formatData(value, width) {
             // Ensure the data fits within the given width, padding with spaces if needed
-            return (value || '').padEnd(width);
+            return (value || '').padEnd(width, ' ');
         }
 
         function loadData() {
