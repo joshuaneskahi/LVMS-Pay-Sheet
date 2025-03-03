@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>Event Security Pay Sheet</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -48,19 +47,21 @@
         }
 
         function saveData() {
-            let formData = {};
-            let uniqueId = localStorage.getItem('userId');
-            if (!uniqueId) {
-                uniqueId = generateUniqueId();
-                localStorage.setItem('userId', uniqueId);
-            }
-            
-            document.querySelectorAll('input').forEach(input => {
-                formData[input.id] = input.value;
-            });
+            if (confirm('Are you sure you want to save?')) {
+                let formData = {};
+                let uniqueId = localStorage.getItem('userId');
+                if (!uniqueId) {
+                    uniqueId = generateUniqueId();
+                    localStorage.setItem('userId', uniqueId);
+                }
+                
+                document.querySelectorAll('input').forEach(input => {
+                    formData[input.id] = input.value;
+                });
 
-            localStorage.setItem('securityPaySheet_' + uniqueId, JSON.stringify(formData));
-            alert('Data saved successfully!');
+                localStorage.setItem('securityPaySheet_' + uniqueId, JSON.stringify(formData));
+                alert('Data saved successfully!');
+            }
         }
 
         function loadData() {
@@ -80,13 +81,15 @@
         }
 
         function resetData() {
-            let uniqueId = localStorage.getItem('userId');
-            if (uniqueId) {
-                localStorage.removeItem('securityPaySheet_' + uniqueId);
+            if (confirm('Are you sure you want to reset the data?')) {
+                let uniqueId = localStorage.getItem('userId');
+                if (uniqueId) {
+                    localStorage.removeItem('securityPaySheet_' + uniqueId);
+                }
+                localStorage.removeItem('userId');
+                document.querySelectorAll('input').forEach(input => input.value = '');
+                alert('Data reset successfully!');
             }
-            localStorage.removeItem('userId');
-            document.querySelectorAll('input').forEach(input => input.value = '');
-            alert('Data reset successfully!');
         }
 
         function calculateTotalHours(index) {
@@ -111,53 +114,29 @@
         }
 
         function submitForm() {
-            let event = document.getElementById('event').value;
-            let date = document.getElementById('date').value;
+            if (confirm('Are you sure you want to submit the data?')) {
+                let event = document.getElementById('event').value;
+                let date = document.getElementById('date').value;
 
-            let data = 'EVENT SECURITY PAY SHEET\n\n';
-            data += 'Event: ' + event + '\n';
-            data += 'Date: ' + date + '\n\n';
-            data += 'Last Name, First Name, Time-In, Time-Out, Total Hours, Radio #, Notes\n';
-            
-            for (let i = 1; i <= 10; i++) {
-                data += document.getElementById('lastname' + i).value + ', ';
-                data += document.getElementById('firstname' + i).value + ', ';
-                data += document.getElementById('timein' + i).value + ', ';
-                data += document.getElementById('timeout' + i).value + ', ';
-                data += document.getElementById('totalhours' + i).value + ', ';
-                data += document.getElementById('radio' + i).value + ', ';
-                data += document.getElementById('notes' + i).value + '\n';
+                let data = '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">';
+                data += '<tr><th>Last Name</th><th>First Name</th><th>Time-In</th><th>Time-Out</th><th>Total Hours</th><th>Radio #</th><th>Notes</th></tr>';
+                
+                for (let i = 1; i <= 10; i++) {
+                    data += '<tr>';
+                    data += `<td>${document.getElementById('lastname' + i).value}</td>`;
+                    data += `<td>${document.getElementById('firstname' + i).value}</td>`;
+                    data += `<td>${document.getElementById('timein' + i).value}</td>`;
+                    data += `<td>${document.getElementById('timeout' + i).value}</td>`;
+                    data += `<td>${document.getElementById('totalhours' + i).value}</td>`;
+                    data += `<td>${document.getElementById('radio' + i).value}</td>`;
+                    data += `<td>${document.getElementById('notes' + i).value}</td>`;
+                    data += '</tr>';
+                }
+                data += '</table>';
+
+                let subject = encodeURIComponent('Event Security Pay Sheet - ' + event + ' - ' + date);
+                window.location.href = 'mailto:hlee@lvms.com?subject=' + subject + '&body=' + encodeURIComponent(data);
             }
-
-            let subject = encodeURIComponent('Event Security Pay Sheet - ' + event + ' - ' + date);
-            window.location.href = 'mailto:hlee@lvms.com?subject=' + subject + '&body=' + encodeURIComponent(data);
-
-            // Generate Excel file
-            generateExcel(event, date);
-        }
-
-        function generateExcel(event, date) {
-            let wb = XLSX.utils.book_new();
-            let ws_data = [['Last Name', 'First Name', 'Time-In', 'Time-Out', 'Total Hours', 'Radio #', 'Notes']];
-
-            for (let i = 1; i <= 10; i++) {
-                ws_data.push([
-                    document.getElementById('lastname' + i).value,
-                    document.getElementById('firstname' + i).value,
-                    document.getElementById('timein' + i).value,
-                    document.getElementById('timeout' + i).value,
-                    document.getElementById('totalhours' + i).value,
-                    document.getElementById('radio' + i).value,
-                    document.getElementById('notes' + i).value
-                ]);
-            }
-
-            let ws = XLSX.utils.aoa_to_sheet(ws_data);
-            XLSX.utils.book_append_sheet(wb, ws, "Security Pay Sheet");
-
-            // Save the file as Excel
-            let fileName = `${event}_${date}_Security_Pay_Sheet.xlsx`;
-            XLSX.writeFile(wb, fileName);
         }
 
         function setCurrentDate() {
