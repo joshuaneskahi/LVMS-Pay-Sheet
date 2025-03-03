@@ -58,7 +58,7 @@
         function resetData() {
             localStorage.removeItem('securityPaySheet');
             document.querySelectorAll('input').forEach(input => input.value = '');
-            alert('Data reset successfully!');
+            // Data is automatically reset without confirmation after email submission
         }
 
         function submitForm() {
