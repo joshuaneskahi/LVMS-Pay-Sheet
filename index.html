@@ -68,8 +68,23 @@
                 let data = `Event Security Pay Sheet\n\n`;
                 data += `Event: ${event}\n`;
                 data += `Date: ${date}\n\n`;
-                data += `Last Name\tFirst Name\tTime-In\tTime-Out\tTotal Hours\tRadio #\tNotes\n`;
 
+                // Format the header for alignment
+                let header = `Last Name        First Name       Time-In    Time-Out   Total Hours  Radio #   Notes\n`;
+                data += header;
+
+                // Define fixed widths for each column for alignment
+                let colWidth = {
+                    lastname: 15,
+                    firstname: 15,
+                    timein: 10,
+                    timeout: 10,
+                    totalhours: 12,
+                    radio: 10,
+                    notes: 10
+                };
+
+                // Adding each row with consistent spacing
                 for (let i = 1; i <= 30; i++) {
                     let lastname = document.getElementById('lastname' + i).value;
                     let firstname = document.getElementById('firstname' + i).value;
@@ -81,7 +96,13 @@
 
                     // Only include rows where at least one field is not empty
                     if (lastname || firstname || timein || timeout || totalhours || radio || notes) {
-                        data += `${lastname || ''}\t${firstname || ''}\t${timein || ''}\t${timeout || ''}\t${totalhours || ''}\t${radio || ''}\t${notes || ''}\n`;
+                        data += formatData(lastname, colWidth.lastname) + 
+                                formatData(firstname, colWidth.firstname) + 
+                                formatData(timein, colWidth.timein) + 
+                                formatData(timeout, colWidth.timeout) + 
+                                formatData(totalhours, colWidth.totalhours) + 
+                                formatData(radio, colWidth.radio) + 
+                                formatData(notes, colWidth.notes) + '\n';
                     }
                 }
 
@@ -98,6 +119,11 @@
                 alert("Data has been successfully sent.");
                 resetData();
             }
+        }
+
+        function formatData(value, width) {
+            // Ensure the data fits within the given width, padding with spaces if needed
+            return (value || '').padEnd(width);
         }
 
         function loadData() {
