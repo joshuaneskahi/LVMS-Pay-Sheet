@@ -65,23 +65,10 @@
                 let event = document.getElementById('event').value;
                 let date = document.getElementById('date').value;
 
-                let data = `
-                    <html>
-                    <body>
-                        <h2>Event Security Pay Sheet</h2>
-                        <p><strong>Event:</strong> ${event}</p>
-                        <p><strong>Date:</strong> ${date}</p>
-                        <br>
-                        <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">
-                            <tr style="background-color: #003366; color: white;">
-                                <th>Last Name</th>
-                                <th>First Name</th>
-                                <th>Time-In</th>
-                                <th>Time-Out</th>
-                                <th>Total Hours</th>
-                                <th>Radio #</th>
-                                <th>Notes</th>
-                            </tr>`;
+                let data = `Event Security Pay Sheet\n\n`;
+                data += `Event: ${event}\n`;
+                data += `Date: ${date}\n\n`;
+                data += `Last Name\tFirst Name\tTime-In\tTime-Out\tTotal Hours\tRadio #\tNotes\n`;
 
                 for (let i = 1; i <= 30; i++) {
                     let lastname = document.getElementById('lastname' + i).value;
@@ -94,29 +81,15 @@
 
                     // Only include rows where at least one field is not empty
                     if (lastname || firstname || timein || timeout || totalhours || radio || notes) {
-                        data += `
-                                <tr>
-                                    <td>${lastname || ''}</td>
-                                    <td>${firstname || ''}</td>
-                                    <td>${timein || ''}</td>
-                                    <td>${timeout || ''}</td>
-                                    <td>${totalhours || ''}</td>
-                                    <td>${radio || ''}</td>
-                                    <td>${notes || ''}</td>
-                                </tr>`;
+                        data += `${lastname || ''}\t${firstname || ''}\t${timein || ''}\t${timeout || ''}\t${totalhours || ''}\t${radio || ''}\t${notes || ''}\n`;
                     }
                 }
 
-                data += `
-                        </table>
-                    </body>
-                    </html>`;
-
                 let subject = 'Event Security Pay Sheet - ' + event + ' - ' + date;
-                let body = data;
+                let body = encodeURIComponent(data);
 
-                // Properly formatted mailto link with subject and body (no encodeURIComponent)
-                const mailtoLink = `mailto:joshua.neskahi@outlook.com?subject=${subject}&body=${encodeURIComponent(body)}`;
+                // Properly formatted mailto link with subject and body (no HTML)
+                const mailtoLink = `mailto:joshua.neskahi@outlook.com?subject=${subject}&body=${body}`;
 
                 // Ensure the mailto link works
                 window.location.href = mailtoLink;
