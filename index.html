@@ -70,9 +70,7 @@
                 data += `Date: ${date}\n\n`;
 
                 // Define the header with 20 character width per column
-                let header = `--------------------------------------------------------------------------------------------\n`;
-                header += ` Last Name          First Name          Time In    Time Out    Total Hours    Radio#     Notes \n`;
-                header += `-----------------------------------------------------------------------------------------------\n`;
+                let header = ` Last Name          First Name          Time In    Time Out    Total Hours    Radio#     Notes \n`;
                 data += header;
 
                 // Define fixed widths for each column to align with the headers
@@ -93,8 +91,6 @@
                         data += `${formatData(lastname, colWidth)}${formatData(firstname, colWidth)}${formatData(timein, colWidth)}${formatData(timeout, colWidth)}${formatData(totalhours, colWidth)}${formatData(radio, colWidth)}${formatData(notes, colWidth)}\n`;
                     }
                 }
-
-                data += `------------------------------------------------------------\n`;
 
                 let subject = 'Event Security Pay Sheet - ' + event + ' - ' + date;
                 let body = encodeURIComponent(data);
