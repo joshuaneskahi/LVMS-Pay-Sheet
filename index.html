@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Event Security Pay Sheet</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -43,25 +44,21 @@
     </style>
     <script>
         function generateUniqueId() {
-            // This generates a simple random ID (for session or unique users)
             return 'user_' + Math.random().toString(36).substring(2, 15);
         }
 
         function saveData() {
             let formData = {};
-            // Generate a unique ID for the user/session
             let uniqueId = localStorage.getItem('userId');
             if (!uniqueId) {
-                uniqueId = generateUniqueId();  // Set a unique ID if not set
+                uniqueId = generateUniqueId();
                 localStorage.setItem('userId', uniqueId);
             }
             
-            // Collect the form data
             document.querySelectorAll('input').forEach(input => {
                 formData[input.id] = input.value;
             });
-            
-            // Save data using the unique ID
+
             localStorage.setItem('securityPaySheet_' + uniqueId, JSON.stringify(formData));
             alert('Data saved successfully!');
         }
@@ -69,7 +66,7 @@
         function loadData() {
             let uniqueId = localStorage.getItem('userId');
             if (!uniqueId) {
-                uniqueId = generateUniqueId();  // Set a unique ID if not set
+                uniqueId = generateUniqueId();
                 localStorage.setItem('userId', uniqueId);
             }
 
@@ -132,11 +129,35 @@
                 data += document.getElementById('notes' + i).value + '\n';
             }
 
-            // Set the subject line to include event and date
             let subject = encodeURIComponent('Event Security Pay Sheet - ' + event + ' - ' + date);
+            window.location.href = 'mailto:hlee@lvms.com?subject=' + subject + '&body=' + encodeURIComponent(data);
 
-            // Use mailto with the event and date in the subject line
-            window.location.href = 'mailto:joshua.neskahi@outlook.com?subject=' + subject + '&body=' + encodeURIComponent(data);
+            // Generate Excel file
+            generateExcel(event, date);
+        }
+
+        function generateExcel(event, date) {
+            let wb = XLSX.utils.book_new();
+            let ws_data = [['Last Name', 'First Name', 'Time-In', 'Time-Out', 'Total Hours', 'Radio #', 'Notes']];
+
+            for (let i = 1; i <= 10; i++) {
+                ws_data.push([
+                    document.getElementById('lastname' + i).value,
+                    document.getElementById('firstname' + i).value,
+                    document.getElementById('timein' + i).value,
+                    document.getElementById('timeout' + i).value,
+                    document.getElementById('totalhours' + i).value,
+                    document.getElementById('radio' + i).value,
+                    document.getElementById('notes' + i).value
+                ]);
+            }
+
+            let ws = XLSX.utils.aoa_to_sheet(ws_data);
+            XLSX.utils.book_append_sheet(wb, ws, "Security Pay Sheet");
+
+            // Save the file as Excel
+            let fileName = `${event}_${date}_Security_Pay_Sheet.xlsx`;
+            XLSX.writeFile(wb, fileName);
         }
 
         function setCurrentDate() {
@@ -153,7 +174,7 @@
     <img id="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjlcsupsGBKup4buW90-q4I2cRwAfrhebYRw&s" alt="Las Vegas Motor Speedway Logo">
     <h2>Event Security Pay Sheet</h2>
     <label>Event:</label> <input type="text" id="event"><br>
-    <label>Date:</label> <input type="date" id="date"><br><br> <!-- The date field will be automatically filled in -->
+    <label>Date:</label> <input type="date" id="date"><br><br>
 
     <table>
         <tr>
@@ -179,7 +200,7 @@
             }
         </script>
     </table><br>
-    
+
     <button onclick="saveData()">Save</button>
     <button onclick="resetData()">Reset Data</button>
     <button onclick="submitForm()">Submit</button>
