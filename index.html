@@ -67,32 +67,32 @@
 
                 let data = `
                     <html>
-                    <body style="font-family: Arial, sans-serif; background-color: #f8f8f8; color: #000; text-align: center;">
-                        <h2 style="color: #003366;">Event Security Pay Sheet</h2>
+                    <body>
+                        <h2>Event Security Pay Sheet</h2>
                         <p><strong>Event:</strong> ${event}</p>
                         <p><strong>Date:</strong> ${date}</p>
                         <br>
-                        <table style="margin: auto; width: 80%; border-collapse: collapse; background-color: white;">
+                        <table>
                             <tr style="background-color: #003366; color: white;">
-                                <th style="border: 1px solid black; padding: 8px; text-align: center;">Last Name</th>
-                                <th style="border: 1px solid black; padding: 8px; text-align: center;">First Name</th>
-                                <th style="border: 1px solid black; padding: 8px; text-align: center;">Time-In</th>
-                                <th style="border: 1px solid black; padding: 8px; text-align: center;">Time-Out</th>
-                                <th style="border: 1px solid black; padding: 8px; text-align: center;">Total Hours</th>
-                                <th style="border: 1px solid black; padding: 8px; text-align: center;">Radio #</th>
-                                <th style="border: 1px solid black; padding: 8px; text-align: center;">Notes</th>
+                                <th>Last Name</th>
+                                <th>First Name</th>
+                                <th>Time-In</th>
+                                <th>Time-Out</th>
+                                <th>Total Hours</th>
+                                <th>Radio #</th>
+                                <th>Notes</th>
                             </tr>`;
 
                 for (let i = 1; i <= 30; i++) {
                     data += `
                             <tr>
-                                <td style="border: 1px solid black; padding: 8px; text-align: center;">${document.getElementById('lastname' + i).value}</td>
-                                <td style="border: 1px solid black; padding: 8px; text-align: center;">${document.getElementById('firstname' + i).value}</td>
-                                <td style="border: 1px solid black; padding: 8px; text-align: center;">${document.getElementById('timein' + i).value}</td>
-                                <td style="border: 1px solid black; padding: 8px; text-align: center;">${document.getElementById('timeout' + i).value}</td>
-                                <td style="border: 1px solid black; padding: 8px; text-align: center;">${document.getElementById('totalhours' + i).value}</td>
-                                <td style="border: 1px solid black; padding: 8px; text-align: center;">${document.getElementById('radio' + i).value}</td>
-                                <td style="border: 1px solid black; padding: 8px; text-align: center;">${document.getElementById('notes' + i).value}</td>
+                                <td>${document.getElementById('lastname' + i).value}</td>
+                                <td>${document.getElementById('firstname' + i).value}</td>
+                                <td>${document.getElementById('timein' + i).value}</td>
+                                <td>${document.getElementById('timeout' + i).value}</td>
+                                <td>${document.getElementById('totalhours' + i).value}</td>
+                                <td>${document.getElementById('radio' + i).value}</td>
+                                <td>${document.getElementById('notes' + i).value}</td>
                             </tr>`;
                 }
 
