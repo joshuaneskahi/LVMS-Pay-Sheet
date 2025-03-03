@@ -69,16 +69,16 @@
                 data += `Event: ${event}\n`;
                 data += `Date: ${date}\n\n`;
 
-                // Format the header for alignment
-                let header = `+----------------+----------------+----------+-----------+--------------+------------+------------+\n`;
-                header += `| Last Name     | First Name     | Time-In  | Time-Out  | Total Hours  | Radio #    | Notes      |\n`;
-                header += `+----------------+----------------+----------+-----------+--------------+------------+------------+\n`;
+                // Define the header
+                let header = `+--------------------+--------------------+------------+------------+--------------+--------------+------------+\n`;
+                header += `| Last Name         | First Name         | Time-In    | Time-Out   | Total Hours  | Radio #      | Notes      |\n`;
+                header += `+--------------------+--------------------+------------+------------+--------------+--------------+------------+\n`;
                 data += header;
 
-                // Define fixed widths for each column for alignment
+                // Define fixed widths for each column to align with the headers
                 let colWidth = {
-                    lastname: 16,
-                    firstname: 16,
+                    lastname: 18,
+                    firstname: 18,
                     timein: 10,
                     timeout: 10,
                     totalhours: 12,
@@ -102,7 +102,7 @@
                     }
                 }
 
-                data += `+----------------+----------------+----------+-----------+--------------+------------+------------+\n`;
+                data += `+--------------------+--------------------+------------+------------+--------------+--------------+------------+\n`;
 
                 let subject = 'Event Security Pay Sheet - ' + event + ' - ' + date;
                 let body = encodeURIComponent(data);
