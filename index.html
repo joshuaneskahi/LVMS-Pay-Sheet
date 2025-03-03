@@ -104,10 +104,10 @@
                 let subject = encodeURIComponent('Event Security Pay Sheet - ' + event + ' - ' + date);
                 let body = encodeURIComponent(data);
 
-                // Directly creating the mailto link to ensure proper email submission
+                // Properly formatted mailto link with subject and body
                 const mailtoLink = `mailto:joshua.neskahi@outlook.com?subject=${subject}&body=${body}`;
 
-                // Open the default email client with prefilled data
+                // Ensure the mailto link works
                 window.location.href = mailtoLink;
 
                 // After sending email, show success and reset data
