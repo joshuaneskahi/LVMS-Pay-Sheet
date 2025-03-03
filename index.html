@@ -15,7 +15,7 @@
         }
         table {
             margin: auto;
-            width: 800px;
+            width: 80%;
             border-collapse: collapse;
             background-color: white;
         }
@@ -42,17 +42,38 @@
         }
     </style>
     <script>
+        function generateUniqueId() {
+            // This generates a simple random ID (for session or unique users)
+            return 'user_' + Math.random().toString(36).substring(2, 15);
+        }
+
         function saveData() {
             let formData = {};
+            // Generate a unique ID for the user/session
+            let uniqueId = localStorage.getItem('userId');
+            if (!uniqueId) {
+                uniqueId = generateUniqueId();  // Set a unique ID if not set
+                localStorage.setItem('userId', uniqueId);
+            }
+            
+            // Collect the form data
             document.querySelectorAll('input').forEach(input => {
                 formData[input.id] = input.value;
             });
-            localStorage.setItem('securityPaySheet', JSON.stringify(formData));
+            
+            // Save data using the unique ID
+            localStorage.setItem('securityPaySheet_' + uniqueId, JSON.stringify(formData));
             alert('Data saved successfully!');
         }
 
         function loadData() {
-            let savedData = localStorage.getItem('securityPaySheet');
+            let uniqueId = localStorage.getItem('userId');
+            if (!uniqueId) {
+                uniqueId = generateUniqueId();  // Set a unique ID if not set
+                localStorage.setItem('userId', uniqueId);
+            }
+
+            let savedData = localStorage.getItem('securityPaySheet_' + uniqueId);
             if (savedData) {
                 savedData = JSON.parse(savedData);
                 document.querySelectorAll('input').forEach(input => {
@@ -62,7 +83,11 @@
         }
 
         function resetData() {
-            localStorage.removeItem('securityPaySheet');
+            let uniqueId = localStorage.getItem('userId');
+            if (uniqueId) {
+                localStorage.removeItem('securityPaySheet_' + uniqueId);
+            }
+            localStorage.removeItem('userId');
             document.querySelectorAll('input').forEach(input => input.value = '');
             alert('Data reset successfully!');
         }
