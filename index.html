@@ -122,10 +122,17 @@
                 let subject = encodeURIComponent('Event Security Pay Sheet - ' + event + ' - ' + date);
                 let body = encodeURIComponent(data);
 
+                // Check if the mailto link is supported by the browser
+                const mailtoLink = `mailto:joshua.neskahi@outlook.com?subject=${subject}&body=${body}`;
+
+                // Debug log
+                console.log('Sending email with subject:', subject);
+                console.log('Email body:', data);
+
                 // Use setTimeout to delay the mailto action and avoid browser blocking issues
                 setTimeout(function() {
-                    window.location.href = 'mailto:joshua.neskahi@outlook.com?subject=' + subject + '&body=' + body;
-                }, 100);  // Delay of 100ms to trigger mailto properly after confirmation
+                    window.location.href = mailtoLink;
+                }, 300);  // Delay of 300ms to trigger mailto properly after confirmation
             }
         }
 
