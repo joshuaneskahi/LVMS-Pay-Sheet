@@ -72,7 +72,7 @@
                         <p><strong>Event:</strong> ${event}</p>
                         <p><strong>Date:</strong> ${date}</p>
                         <br>
-                        <table border="1">
+                        <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">
                             <tr>
                                 <th>Last Name</th>
                                 <th>First Name</th>
@@ -112,10 +112,10 @@
                     </body>
                     </html>`;
 
-                let subject = encodeURIComponent('Event Security Pay Sheet - ' + event + ' - ' + date);
-                let body = encodeURIComponent(data);
+                let subject = 'Event Security Pay Sheet - ' + event + ' - ' + date;
+                let body = data;
 
-                // Properly formatted mailto link with subject and body
+                // Properly formatted mailto link with subject and body (no encodeURIComponent)
                 const mailtoLink = `mailto:joshua.neskahi@outlook.com?subject=${subject}&body=${body}`;
 
                 // Ensure the mailto link works
