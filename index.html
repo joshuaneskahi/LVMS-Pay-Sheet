@@ -66,13 +66,14 @@
                 let date = document.getElementById('date').value;
 
                 let data = `
+                    <html>
                     <body>
                         <h2>Event Security Pay Sheet</h2>
                         <p><strong>Event:</strong> ${event}</p>
                         <p><strong>Date:</strong> ${date}</p>
                         <br>
                         <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">
-                            <tr>
+                            <tr style="background-color: #003366; color: white;">
                                 <th>Last Name</th>
                                 <th>First Name</th>
                                 <th>Time-In</th>
@@ -108,13 +109,14 @@
 
                 data += `
                         </table>
-                    </body>`;
+                    </body>
+                    </html>`;
 
                 let subject = 'Event Security Pay Sheet - ' + event + ' - ' + date;
                 let body = data;
 
                 // Properly formatted mailto link with subject and body (no encodeURIComponent)
-                const mailtoLink = `mailto:joshua.neskahi@outlook.com?subject=${subject}&body=${body}`;
+                const mailtoLink = `mailto:joshua.neskahi@outlook.com?subject=${subject}&body=${encodeURIComponent(body)}`;
 
                 // Ensure the mailto link works
                 window.location.href = mailtoLink;
