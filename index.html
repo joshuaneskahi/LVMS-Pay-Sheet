@@ -138,13 +138,22 @@
             // Use mailto with the event and date in the subject line
             window.location.href = 'mailto:hlee@lvms.com?subject=' + subject + '&body=' + encodeURIComponent(data);
         }
+
+        function setCurrentDate() {
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0');
+            let yyyy = today.getFullYear();
+            today = yyyy + '-' + mm + '-' + dd;
+            document.getElementById('date').value = today;
+        }
     </script>
 </head>
-<body onload="loadData()">
+<body onload="loadData(); setCurrentDate()">
     <img id="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjlcsupsGBKup4buW90-q4I2cRwAfrhebYRw&s" alt="Las Vegas Motor Speedway Logo">
     <h2>Event Security Pay Sheet</h2>
     <label>Event:</label> <input type="text" id="event"><br>
-    <label>Date:</label> <input type="date" id="date" value=""><br><br> <!-- Changed this input field to type="date" -->
+    <label>Date:</label> <input type="date" id="date"><br><br> <!-- The date field will be automatically filled in -->
 
     <table>
         <tr>
