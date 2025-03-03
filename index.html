@@ -63,6 +63,21 @@
             }
         }
 
+        function calculateTotalHours(index) {
+            const timeIn = document.getElementById('timein' + index).value;
+            const timeOut = document.getElementById('timeout' + index).value;
+
+            if (timeIn && timeOut) {
+                const [timeInH, timeInM] = timeIn.split(':').map(Number);
+                const [timeOutH, timeOutM] = timeOut.split(':').map(Number);
+
+                let totalHours = (timeOutH - timeInH) + (timeOutM - timeInM) / 60;
+                if (totalHours < 0) totalHours += 24; // Handles times crossing midnight
+
+                document.getElementById('totalhours' + index).value = totalHours.toFixed(2);
+            }
+        }
+
         function submitForm() {
             if (confirm('Are you sure you want to submit the data?')) {
                 let event = document.getElementById('event').value;
@@ -86,7 +101,7 @@
                                 <th style="border: 1px solid black; padding: 8px; text-align: center;">Notes</th>
                             </tr>`;
 
-                for (let i = 1; i <= 10; i++) {
+                for (let i = 1; i <= 30; i++) {
                     data += `
                             <tr>
                                 <td style="border: 1px solid black; padding: 8px; text-align: center;">${document.getElementById('lastname' + i).value}</td>
@@ -148,7 +163,7 @@
             <th>Notes</th>
         </tr>
         <script>
-            for (let i = 1; i <= 10; i++) {
+            for (let i = 1; i <= 30; i++) {
                 document.write('<tr>');
                 document.write(`<td><input type='text' id='lastname${i}'></td>`);
                 document.write(`<td><input type='text' id='firstname${i}'></td>`);
