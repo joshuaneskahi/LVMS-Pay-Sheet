@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Security Pay Sheet</title>
     <style>
         body {
@@ -42,74 +44,22 @@
         }
     </style>
     <script>
-        function generateUniqueId() {
-            return 'user_' + Math.random().toString(36).substring(2, 15);
-        }
-
         function saveData() {
             if (confirm('Are you sure you want to save?')) {
                 let formData = {};
-                let uniqueId = localStorage.getItem('userId');
-                if (!uniqueId) {
-                    uniqueId = generateUniqueId();
-                    localStorage.setItem('userId', uniqueId);
-                }
-                
                 document.querySelectorAll('input').forEach(input => {
                     formData[input.id] = input.value;
                 });
-
-                localStorage.setItem('securityPaySheet_' + uniqueId, JSON.stringify(formData));
+                localStorage.setItem('securityPaySheet', JSON.stringify(formData));
                 alert('Data saved successfully!');
-            }
-        }
-
-        function loadData() {
-            let uniqueId = localStorage.getItem('userId');
-            if (!uniqueId) {
-                uniqueId = generateUniqueId();
-                localStorage.setItem('userId', uniqueId);
-            }
-
-            let savedData = localStorage.getItem('securityPaySheet_' + uniqueId);
-            if (savedData) {
-                savedData = JSON.parse(savedData);
-                document.querySelectorAll('input').forEach(input => {
-                    input.value = savedData[input.id] || '';
-                });
             }
         }
 
         function resetData() {
             if (confirm('Are you sure you want to reset the data?')) {
-                let uniqueId = localStorage.getItem('userId');
-                if (uniqueId) {
-                    localStorage.removeItem('securityPaySheet_' + uniqueId);
-                }
-                localStorage.removeItem('userId');
+                localStorage.removeItem('securityPaySheet');
                 document.querySelectorAll('input').forEach(input => input.value = '');
                 alert('Data reset successfully!');
-            }
-        }
-
-        function calculateTotalHours(index) {
-            let timeIn = document.getElementById(`timein${index}`).value;
-            let timeOut = document.getElementById(`timeout${index}`).value;
-            
-            if (timeIn && timeOut) {
-                let [inHours, inMinutes] = timeIn.split(':').map(Number);
-                let [outHours, outMinutes] = timeOut.split(':').map(Number);
-                
-                let start = inHours * 60 + inMinutes;
-                let end = outHours * 60 + outMinutes;
-                
-                if (end < start) {
-                    end += 1440; // Handle overnight shifts
-                }
-                
-                let totalMinutes = end - start;
-                let totalHours = (totalMinutes / 60).toFixed(2);
-                document.getElementById(`totalhours${index}`).value = totalHours;
             }
         }
 
@@ -118,20 +68,41 @@
                 let event = document.getElementById('event').value;
                 let date = document.getElementById('date').value;
 
-                let data = 'Event Security Pay Sheet:\n\n';
-                data += 'Event: ' + event + '\n';
-                data += 'Date: ' + date + '\n\n';
-                data += 'Last Name, First Name, Time-In, Time-Out, Total Hours, Radio #, Notes\n';
-                
+                let data = `
+                    <html>
+                    <body style="font-family: Arial, sans-serif; background-color: #f8f8f8; color: #000; text-align: center;">
+                        <h2 style="color: #003366;">Event Security Pay Sheet</h2>
+                        <p><strong>Event:</strong> ${event}</p>
+                        <p><strong>Date:</strong> ${date}</p>
+                        <br>
+                        <table style="margin: auto; width: 80%; border-collapse: collapse; background-color: white;">
+                            <tr style="background-color: #003366; color: white;">
+                                <th style="border: 1px solid black; padding: 8px; text-align: center;">Last Name</th>
+                                <th style="border: 1px solid black; padding: 8px; text-align: center;">First Name</th>
+                                <th style="border: 1px solid black; padding: 8px; text-align: center;">Time-In</th>
+                                <th style="border: 1px solid black; padding: 8px; text-align: center;">Time-Out</th>
+                                <th style="border: 1px solid black; padding: 8px; text-align: center;">Total Hours</th>
+                                <th style="border: 1px solid black; padding: 8px; text-align: center;">Radio #</th>
+                                <th style="border: 1px solid black; padding: 8px; text-align: center;">Notes</th>
+                            </tr>`;
+
                 for (let i = 1; i <= 10; i++) {
-                    data += document.getElementById('lastname' + i).value + ', ';
-                    data += document.getElementById('firstname' + i).value + ', ';
-                    data += document.getElementById('timein' + i).value + ', ';
-                    data += document.getElementById('timeout' + i).value + ', ';
-                    data += document.getElementById('totalhours' + i).value + ', ';
-                    data += document.getElementById('radio' + i).value + ', ';
-                    data += document.getElementById('notes' + i).value + '\n';
+                    data += `
+                            <tr>
+                                <td style="border: 1px solid black; padding: 8px; text-align: center;">${document.getElementById('lastname' + i).value}</td>
+                                <td style="border: 1px solid black; padding: 8px; text-align: center;">${document.getElementById('firstname' + i).value}</td>
+                                <td style="border: 1px solid black; padding: 8px; text-align: center;">${document.getElementById('timein' + i).value}</td>
+                                <td style="border: 1px solid black; padding: 8px; text-align: center;">${document.getElementById('timeout' + i).value}</td>
+                                <td style="border: 1px solid black; padding: 8px; text-align: center;">${document.getElementById('totalhours' + i).value}</td>
+                                <td style="border: 1px solid black; padding: 8px; text-align: center;">${document.getElementById('radio' + i).value}</td>
+                                <td style="border: 1px solid black; padding: 8px; text-align: center;">${document.getElementById('notes' + i).value}</td>
+                            </tr>`;
                 }
+
+                data += `
+                        </table>
+                    </body>
+                    </html>`;
 
                 let subject = encodeURIComponent('Event Security Pay Sheet - ' + event + ' - ' + date);
                 let body = encodeURIComponent(data);
@@ -143,22 +114,29 @@
             }
         }
 
+        function loadData() {
+            let savedData = localStorage.getItem('securityPaySheet');
+            if (savedData) {
+                savedData = JSON.parse(savedData);
+                document.querySelectorAll('input').forEach(input => {
+                    input.value = savedData[input.id] || '';
+                });
+            }
+        }
+
         function setCurrentDate() {
             let today = new Date();
-            let dd = String(today.getDate()).padStart(2, '0');
-            let mm = String(today.getMonth() + 1).padStart(2, '0');
-            let yyyy = today.getFullYear();
-            today = yyyy + '-' + mm + '-' + dd;
-            document.getElementById('date').value = today;
+            let dateStr = today.toISOString().split('T')[0];
+            document.getElementById('date').value = dateStr;
         }
     </script>
 </head>
-<body onload="loadData(); setCurrentDate()">
+<body onload="loadData(); setCurrentDate();">
     <img id="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjlcsupsGBKup4buW90-q4I2cRwAfrhebYRw&s" alt="Las Vegas Motor Speedway Logo">
     <h2>Event Security Pay Sheet</h2>
     <label>Event:</label> <input type="text" id="event"><br>
     <label>Date:</label> <input type="date" id="date"><br><br>
-
+    
     <table>
         <tr>
             <th>Last Name</th>
@@ -183,7 +161,7 @@
             }
         </script>
     </table><br>
-
+    
     <button onclick="saveData()">Save</button>
     <button onclick="resetData()">Reset Data</button>
     <button onclick="submitForm()">Submit</button>
