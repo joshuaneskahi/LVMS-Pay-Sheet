@@ -84,16 +84,27 @@
                             </tr>`;
 
                 for (let i = 1; i <= 30; i++) {
-                    data += `
-                            <tr>
-                                <td>${document.getElementById('lastname' + i).value}</td>
-                                <td>${document.getElementById('firstname' + i).value}</td>
-                                <td>${document.getElementById('timein' + i).value}</td>
-                                <td>${document.getElementById('timeout' + i).value}</td>
-                                <td>${document.getElementById('totalhours' + i).value}</td>
-                                <td>${document.getElementById('radio' + i).value}</td>
-                                <td>${document.getElementById('notes' + i).value}</td>
-                            </tr>`;
+                    let lastname = document.getElementById('lastname' + i).value;
+                    let firstname = document.getElementById('firstname' + i).value;
+                    let timein = document.getElementById('timein' + i).value;
+                    let timeout = document.getElementById('timeout' + i).value;
+                    let totalhours = document.getElementById('totalhours' + i).value;
+                    let radio = document.getElementById('radio' + i).value;
+                    let notes = document.getElementById('notes' + i).value;
+
+                    // Only include rows where at least one field is not empty
+                    if (lastname || firstname || timein || timeout || totalhours || radio || notes) {
+                        data += `
+                                <tr>
+                                    <td>${lastname || ''}</td>
+                                    <td>${firstname || ''}</td>
+                                    <td>${timein || ''}</td>
+                                    <td>${timeout || ''}</td>
+                                    <td>${totalhours || ''}</td>
+                                    <td>${radio || ''}</td>
+                                    <td>${notes || ''}</td>
+                                </tr>`;
+                    }
                 }
 
                 data += `
