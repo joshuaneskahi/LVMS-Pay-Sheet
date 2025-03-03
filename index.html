@@ -58,7 +58,6 @@
         function resetData() {
             localStorage.removeItem('securityPaySheet');
             document.querySelectorAll('input').forEach(input => input.value = '');
-            // Data is automatically reset without confirmation after email submission
         }
 
         function submitForm() {
@@ -105,23 +104,13 @@
                 let subject = encodeURIComponent('Event Security Pay Sheet - ' + event + ' - ' + date);
                 let body = encodeURIComponent(data);
 
-                // Check if the mailto link is supported by the browser
                 const mailtoLink = `mailto:joshua.neskahi@outlook.com?subject=${subject}&body=${body}`;
 
-                // Debug log
-                console.log('Sending email with subject:', subject);
-                console.log('Email body:', data);
+                window.location.href = mailtoLink;
 
-                // Use setTimeout to delay the mailto action and avoid browser blocking issues
-                setTimeout(function() {
-                    window.location.href = mailtoLink;
-
-                    // Confirm submission and reset data (no reset confirmation)
-                    alert("Data has been successfully sent.");
-
-                    // Automatically reset data after successful submission without additional confirmation
-                    resetData();
-                }, 300);  // Delay of 300ms to trigger mailto properly after confirmation
+                // After sending email, show success and reset data
+                alert("Data has been successfully sent.");
+                resetData();
             }
         }
 
