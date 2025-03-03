@@ -132,6 +132,10 @@
                 // Use setTimeout to delay the mailto action and avoid browser blocking issues
                 setTimeout(function() {
                     window.location.href = mailtoLink;
+
+                    // Confirm submission and reset data
+                    alert("Data has been successfully sent.");
+                    resetData();
                 }, 300);  // Delay of 300ms to trigger mailto properly after confirmation
             }
         }
