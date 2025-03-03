@@ -69,22 +69,14 @@
                 data += `Event: ${event}\n`;
                 data += `Date: ${date}\n\n`;
 
-                // Define the header without pipes (|), and add space for alignment
-                let header = `---------------------------------------------------------\n`;
-                header += ` Last                First               In     Out     Total   Radio#   Notes \n`;
-                header += `---------------------------------------------------------\n`;
+                // Define the header with 20 character width per column
+                let header = `------------------------------------------------------------\n`;
+                header += ` Last                First               In        Out       Total      Radio#     Notes \n`;
+                header += `------------------------------------------------------------\n`;
                 data += header;
 
                 // Define fixed widths for each column to align with the headers
-                let colWidth = {
-                    lastname: 18,
-                    firstname: 18,
-                    timein: 10,
-                    timeout: 10,
-                    totalhours: 12,
-                    radio: 12,
-                    notes: 12
-                };
+                let colWidth = 20;
 
                 // Adding each row with consistent spacing
                 for (let i = 1; i <= 30; i++) {
@@ -98,11 +90,11 @@
 
                     // Only include rows where at least one field is not empty
                     if (lastname || firstname || timein || timeout || totalhours || radio || notes) {
-                        data += `${formatData(lastname, colWidth.lastname)}${formatData(firstname, colWidth.firstname)}${formatData(timein, colWidth.timein)}${formatData(timeout, colWidth.timeout)}${formatData(totalhours, colWidth.totalhours)}${formatData(radio, colWidth.radio)}${formatData(notes, colWidth.notes)}\n`;
+                        data += `${formatData(lastname, colWidth)}${formatData(firstname, colWidth)}${formatData(timein, colWidth)}${formatData(timeout, colWidth)}${formatData(totalhours, colWidth)}${formatData(radio, colWidth)}${formatData(notes, colWidth)}\n`;
                     }
                 }
 
-                data += `---------------------------------------------------------\n`;
+                data += `------------------------------------------------------------\n`;
 
                 let subject = 'Event Security Pay Sheet - ' + event + ' - ' + date;
                 let body = encodeURIComponent(data);
