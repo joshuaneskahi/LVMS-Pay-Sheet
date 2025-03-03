@@ -136,7 +136,7 @@
             let subject = encodeURIComponent('Event Security Pay Sheet - ' + event + ' - ' + date);
 
             // Use mailto with the event and date in the subject line
-            window.location.href = 'mailto:joshua.neskahi@outlook.com?subject=' + subject + '&body=' + encodeURIComponent(data);
+            window.location.href = 'mailto:hlee@lvms.com?subject=' + subject + '&body=' + encodeURIComponent(data);
         }
     </script>
 </head>
@@ -144,8 +144,8 @@
     <img id="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjlcsupsGBKup4buW90-q4I2cRwAfrhebYRw&s" alt="Las Vegas Motor Speedway Logo">
     <h2>Event Security Pay Sheet</h2>
     <label>Event:</label> <input type="text" id="event"><br>
-    <label>Date:</label> <input type="text" id="date"><br><br>
-    
+    <label>Date:</label> <input type="date" id="date" value=""><br><br> <!-- Changed this input field to type="date" -->
+
     <table>
         <tr>
             <th>Last Name</th>
