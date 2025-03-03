@@ -56,11 +56,9 @@
         }
 
         function resetData() {
-            if (confirm('Are you sure you want to reset the data?')) {
-                localStorage.removeItem('securityPaySheet');
-                document.querySelectorAll('input').forEach(input => input.value = '');
-                alert('Data reset successfully!');
-            }
+            localStorage.removeItem('securityPaySheet');
+            document.querySelectorAll('input').forEach(input => input.value = '');
+            alert('Data reset successfully!');
         }
 
         function submitForm() {
@@ -120,7 +118,8 @@
 
                     // Confirm submission and reset data (no reset confirmation)
                     alert("Data has been successfully sent.");
-                    // Automatically reset data after successful submission
+
+                    // Automatically reset data after successful submission without additional confirmation
                     resetData();
                 }, 300);  // Delay of 300ms to trigger mailto properly after confirmation
             }
